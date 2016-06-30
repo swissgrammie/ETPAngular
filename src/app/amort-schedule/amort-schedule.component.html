@@ -1,0 +1,8 @@
+<div *ngIf="amortSchedule">
+  <ul>
+    <li *ngFor="let amortItem of amortSchedule">
+      {{amortItem.month}} {{amortItem.interest}} {{amortItem.principal}}
+    </li>
+  </ul>
+</div>
+
