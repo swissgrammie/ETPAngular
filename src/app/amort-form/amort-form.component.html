@@ -4,7 +4,11 @@
   <form>
     <div class="form-group">
       <label for="startYear">Start Year</label>
-      <input type="text"  class="form-control" ngControl="startYear" [(ngModel)]="model.startYear" required>
+      <input type="text"  class="form-control"
+         ngControl="startYear" [(ngModel)]="model.startYear" #startYear="ngForm" required>
+      <div [hidden]="startYear.valid || startYear.pristine" class="alert alert-danger">
+          Start Year is required
+      </div>
     </div>
     <div class="form-group">
       <label for="startMonth">Start Month</label>
