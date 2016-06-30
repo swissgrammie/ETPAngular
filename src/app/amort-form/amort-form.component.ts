@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm }    from '@angular/common';
 
 import { AmortItem } from '../amort-item';
+import { AmortInputs } from './amort-inputs';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +18,7 @@ export class AmortFormComponent implements OnInit {
   submitted = false;
   onSubmit() { this.submitted = true; }
 
-  model = new AmortItem("JAN",1,1);
+  model = new AmortInputs(new Date(), new Date(), 200000,2000,5.5,30);
 
     ngOnInit() {
   }
