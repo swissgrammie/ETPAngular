@@ -23,12 +23,17 @@ export class AmortFormComponent implements OnInit {
 
 
   submitted = false;
-  onSubmit() { this.submitted = true; }
+  onSubmit() { 
+    this.amortService.getAmortSchedule().subscribe(amortSchedule => this.amortSchedule = amortSchedule);
+    this.submitted = true; 
+  }
 
   model = new AmortInputs(new Date(), new Date(), 200000,2000,5.5,30);
 
     ngOnInit() {
-      this.amortSchedule = this.amortService.getAmortSchedule();
+       
+     // 
+      
   }
 
 }
