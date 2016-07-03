@@ -36,6 +36,7 @@ const barrels: string[] = [
   'app/shared',
   'app/amort-form',
   'app/amort-schedule',
+  'app/amort-line-chart',
   /** @cli-barrel */
 ];
 
