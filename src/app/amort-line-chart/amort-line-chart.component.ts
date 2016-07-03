@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AmortItem } from '../amort-item';
+import * as D3 from 'd3/index';
+import * as Moment from 'moment';
 
 @Component({
   moduleId: module.id,

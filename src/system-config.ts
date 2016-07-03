@@ -7,10 +7,18 @@
  **********************************************************************************************/
 /** Map relative paths to URLs. */
 const map: any = {
+  'moment': 'vendor/moment/moment.js',
+  'd3': 'vendor/d3/index.js'
 };
 
 /** User packages configuration. */
 const packages: any = {
+  'moment': {
+    format: 'cjs'
+  },
+  'd3': {
+    
+  }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +61,7 @@ System.config({
   map: {
     '@angular': 'vendor/@angular',
     'rxjs': 'vendor/rxjs',
+    'd3': 'vendor/d3/index.js',
     'main': 'main.js'
   },
   packages: cliSystemConfigPackages
