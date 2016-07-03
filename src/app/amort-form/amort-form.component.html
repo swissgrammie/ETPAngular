@@ -1,44 +1,49 @@
 
 <div class="container">
+
   <h1>Amortization Form</h1>
-  <form (ngSubmit)="onSubmit()" #amortForm="ngForm">
-    <div class="form-group">
-      <label for="startYear">Start Year</label>
-      <input type="text"  class="form-control" required
-         [(ngModel)]="model.startYear"  name="startYear" #startYear="ngModel" >
-        <div [hidden]="startYear.valid || startYear.pristine" class="alert alert-danger">
-          Start year is required
+  <div class="row">
+    <div class="col-md-2">
+
+      <form (ngSubmit)="onSubmit()" #amortForm="ngForm">
+        <div class="form-group">
+          <label for="startYear">Start Year</label>
+          <input type="text"  class="form-control" required
+            [(ngModel)]="model.startYear"  name="startYear" #startYear="ngModel" >
+            <div [hidden]="startYear.valid || startYear.pristine" class="alert alert-danger">
+              Start year is required
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-      <label for="startMonth">Start Month</label>
-      <input type="text" class="form-control" ngControl="startMonth" [(ngModel)]="model.startMonth"  name="startMonth" required>
-    </div>
-    <div class="form-group">
-      <label for="loanAmount">Loan Amount</label>
-      <input type="text" class="form-control" ngControl="loanAmount" [(ngModel)]="model.loanAmount" name="loanAmount" required>
-    </div>
-    <div class="form-group">
-      <label for="depositAmount">Down Payment</label>
-      <input type="text" class="form-control" ngControl="depositAmount" [(ngModel)]="model.depositAmount" name="depositAmount" required>
-    </div>
-    <div class="form-group">
-      <label for="interestRate">Interest Rate</label>
-      <input type="text" class="form-control" ngControl="interestRate" [(ngModel)]="model.interestRate" name="interestRate" required>
-    </div>
-    <div class="form-group">
-      <label for="loanDuration">No of Years</label>
-      <input type="text" class="form-control" ngControl="loanDuration" [(ngModel)]="model.loanDuration" name="loanDuration" required>
-    </div>
-    
-    <button type="submit" class="btn btn-default" >Submit</button>
-  </form>
+        <div class="form-group">
+          <label for="startMonth">Start Month</label>
+          <input type="text" class="form-control" ngControl="startMonth" [(ngModel)]="model.startMonth"  name="startMonth" required>
+        </div>
+        <div class="form-group">
+          <label for="loanAmount">Loan Amount</label>
+          <input type="text" class="form-control" ngControl="loanAmount" [(ngModel)]="model.loanAmount" name="loanAmount" required>
+        </div>
+        <div class="form-group">
+          <label for="depositAmount">Down Payment</label>
+          <input type="text" class="form-control" ngControl="depositAmount" [(ngModel)]="model.depositAmount" name="depositAmount" required>
+        </div>
+        <div class="form-group">
+          <label for="interestRate">Interest Rate</label>
+          <input type="text" class="form-control" ngControl="interestRate" [(ngModel)]="model.interestRate" name="interestRate" required>
+        </div>
+        <div class="form-group">
+          <label for="loanDuration">No of Years</label>
+          <input type="text" class="form-control" ngControl="loanDuration" [(ngModel)]="model.loanDuration" name="loanDuration" required>
+        </div>
+        
+        <button type="submit" class="btn btn-default" >Submit</button>
+      </form>
+  </div>
+   <div class="container">
+        <app-amort-line-chart [amortSchedule]="amortSchedule"></app-amort-line-chart>
+   </div>
 </div>
-
-<div class="container">
-  <app-amort-line-chart [amortSchedule]="amortSchedule"></app-amort-line-chart>
-</div>
-
-<div class="container">
-  <app-amort-schedule [amortSchedule]="amortSchedule"></app-amort-schedule>
+<div class="row">
+  <div class="container">
+    <app-amort-schedule [amortSchedule]="amortSchedule"></app-amort-schedule>
+  </div>
 </div>
