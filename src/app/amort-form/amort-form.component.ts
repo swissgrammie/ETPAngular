@@ -24,9 +24,19 @@ export class AmortFormComponent implements OnInit {
 
 
   submitted = false;
-  onSubmit() { 
+  onSubmit() {
+    // this.welcome();
+    // this.input();
     this.amortService.getAmortSchedule().subscribe(amortSchedule => this.amortSchedule = amortSchedule);
     this.submitted = true; 
+  }
+
+  welcome() {
+    this.amortService.getWelcomeScreen().subscribe(amortSchedule => this.amortSchedule = null);
+  }
+
+  input() {
+    this.amortService.getInputScreen().subscribe(amortSchedule => this.amortSchedule = null);
   }
 
   model = new AmortInputs(new Date(), new Date(), 200000,2000,5.5,30);

@@ -8,26 +8,43 @@ export class AmortService {
   constructor(private http: Http) {}
 
   
+  private url = 'http://192.168.99.100:8080/mort/servlet';
+  private geturl = 'http://192.168.99.100:8080/mort/servlet?transid=init&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
+  private body = 'transid=outp&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
+  private inputbody = 'transid=inpt&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
+  private welcomebody = 'DFH_CURSOR=&DFH_ENTER=Enter';
+  private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', withCredentials:true });
 
 
-  getAmortSchedule() {
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    let body = 'DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
-    let welcomebody = 'DFH_CURSOR=&DFH_ENTER=Enter';
-    let url = 'http://192.168.99.100:8080/mort/servlet';
-
+  getAmortSchedule() {    
     let resp: Response;
 
-    this.http.get(url).map(this.showData);
-    this.http.post(url, welcomebody,headers).map(this.showData);
+    var localheaders = new Headers();
+    localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
-    return this.http.post(url, body ,headers)
-     .map(this.showData); 
+   
+    return this.http.post(this.url, this.body , {headers: localheaders, withCredentials:true})
+     .map((res: Response) => this.showData(res));
 
     // return this.http.get('/app/amortSchedule.json')
     //  .map((res: Response) => res.json()); 
   }
+
+  getWelcomeScreen() {
+    return this.http.get(this.geturl, {withCredentials:true})
+     .map((res: Response) => res.json());    
+  }
+
+    getInputScreen() {
+    var localheaders = new Headers();
+    localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
+    return this.http.post(this.url, this.inputbody ,{headers: localheaders, withCredentials:true})
+     .map((res: Response) => res.json());
+  }
+
   showData(res: Response) {
     let data = res.text();
+    console.log(data);
+    return res.json(); 
   }
 }
