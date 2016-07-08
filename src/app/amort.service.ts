@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { AmortItem } from './amort-item';
 
 @Injectable()
 export class AmortService {
@@ -32,22 +33,35 @@ export class AmortService {
 
   getWelcomeScreen() {
     return this.http.get(this.geturl, {withCredentials:true})
-     .map((res: Response) => res.json());    
+     .map((res: Response) => null);    
   }
 
-    getInputScreen() {
+  getInputScreen() {
     var localheaders = new Headers();
     localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
     return this.http.post(this.url, this.inputbody ,{headers: localheaders, withCredentials:true})
-     .map((res: Response) => res.json());
+     .map((res: Response) => null);
   }
 
+//wrote this routine to handle html response, could easily remove this if the service that we call returned json
   showData(res: Response) {
     let data = res.text();
     var parser = new DOMParser();
     var doc = parser.parseFromString(data,'text/html');
-    doc.firstChild; //this is what you're after.
-    console.log(doc.firstChild);
-    return res.json(); 
+    
+    let table: HTMLElement = doc.getElementById('datatable');    
+    let rows = table.getElementsByTagName('tr');
+//lets throw away the header row
+    var amortSequence : AmortItem[] = new Array<AmortItem>();
+
+    for (let i = 1; i<rows.length; i++) {
+      let values = rows[i].getElementsByTagName('td');
+      let monthYear = values[0].innerText;
+      let principal = values[1].innerText;
+      let interest = values[2].innerText;
+      amortSequence.push(new AmortItem(monthYear,principal,interest));       
+    }
+    
+    return amortSequence; 
   }
 }
