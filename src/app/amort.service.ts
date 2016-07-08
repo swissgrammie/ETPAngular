@@ -51,14 +51,14 @@ export class AmortService {
     
     let table: HTMLElement = doc.getElementById('datatable');    
     let rows = table.getElementsByTagName('tr');
-//lets throw away the header row
     var amortSequence : AmortItem[] = new Array<AmortItem>();
 
+//lets throw away the header row
     for (let i = 1; i<rows.length; i++) {
       let values = rows[i].getElementsByTagName('td');
       let monthYear = values[0].innerText;
-      let principal = values[1].innerText;
-      let interest = values[2].innerText;
+      let principal = +values[1].innerText.replace(/[^0-9\.]+/g,"");  
+      let interest = +values[2].innerText.replace(/[^0-9\.]+/g,"");
       amortSequence.push(new AmortItem(monthYear,principal,interest));       
     }
     

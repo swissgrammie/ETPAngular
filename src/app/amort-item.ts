@@ -1,7 +1,7 @@
 export class AmortItem {
     constructor(
         public month: string,
-        public interest: string,
-        public principal: string ) {
+        public interest: number,
+        public principal: number ) {
     }
 }
