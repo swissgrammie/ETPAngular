@@ -44,7 +44,10 @@ export class AmortService {
 
   showData(res: Response) {
     let data = res.text();
-    console.log(data);
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(data,'text/html');
+    doc.firstChild; //this is what you're after.
+    console.log(doc.firstChild);
     return res.json(); 
   }
 }
