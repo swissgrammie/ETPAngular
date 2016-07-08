@@ -8,9 +8,11 @@ export class AmortService {
 
   constructor(private http: Http) {}
 
+  private url = 'http://docker.local:8080/mort/servlet';
   
-  private url = 'http://192.168.99.100:8080/mort/servlet';
-  private geturl = 'http://192.168.99.100:8080/mort/servlet?transid=init&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
+  //private url = 'http://192.168.99.100:8080/mort/servlet';
+
+  private geturl = this.url + '?transid=init&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
   private body = 'transid=outp&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
   private inputbody = 'transid=inpt&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
   private welcomebody = 'DFH_CURSOR=&DFH_ENTER=Enter';
@@ -32,7 +34,7 @@ export class AmortService {
   }
 
   getWelcomeScreen() {
-    return this.http.get(this.geturl, {withCredentials:true})
+    return this.http.get(this.url, {withCredentials:true})
      .map((res: Response) => null);    
   }
 
