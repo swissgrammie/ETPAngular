@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { AmortItem } from './amort-item';
+import { AmortInputs } from './amort-form/amort-inputs';
 
 @Injectable()
 export class AmortService {
@@ -19,18 +20,31 @@ export class AmortService {
   private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', withCredentials:true });
 
 
-  getAmortSchedule() {    
+  getAmortSchedule(params :AmortInputs ) {    
     let resp: Response;
 
-    var localheaders = new Headers();
+    
+    let urlParams = new URLSearchParams();
+    //now lets map our input model params to the ones the service needs
+    let startDate: Date = new Date(Date.parse(params.startYear.toString())); //bit of a hack cause i am getting a string from the html5 input field (browser dependent?)
+
+    urlParams.set("MONTH", startDate.getMonth().toString()); //TODO off by one error?
+    urlParams.set("YEAR", startDate.getFullYear().toString());
+    urlParams.set("PRICE", params.loanAmount.toString());
+    urlParams.set("DPAY", params.depositAmount.toString());
+    urlParams.set("INTREST", params.interestRate.toString());
+    urlParams.set("YEARS", params.loanDuration.toString());
+
+
+
+    let localheaders = new Headers();
     localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-
    
-    // return this.http.post(this.url, this.body , {headers: localheaders, withCredentials:true})
-    //  .map((res: Response) => this.showData(res));
+    return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
+     .map((res: Response) => this.showData(res));
 
-    return this.http.get('/app/amortSchedule.json')
-     .map((res: Response) => res.json()); 
+    // return this.http.get('/app/amortSchedule.json')
+    //  .map((res: Response) => res.json()); 
   }
 
   getWelcomeScreen() {
