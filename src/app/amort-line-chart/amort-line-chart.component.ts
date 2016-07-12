@@ -36,6 +36,8 @@ export class AmortLineChartComponent {
  * Everythime the @Input is updated, we rebuild the chart
  **/
   ngOnChanges(): void {
+    if (!this.amortSchedule )
+      return;
     this.setup();
     this.buildSVG();
     this.populate();
@@ -44,9 +46,10 @@ export class AmortLineChartComponent {
   }
 
   setup() {
+    
     this.margin = { top: 20, right: 20, bottom: 40, left: 40 };
-    this.width = this.htmlElement.clientWidth - this.margin.left - this.margin.right;
-    this.height = this.width * 0.5 - this.margin.top - this.margin.bottom;
+//    this.width = this.htmlElement.clientWidth - this.margin.left - this.margin.right;
+//    this.height = this.width * 0.5 - this.margin.top - this.margin.bottom;
     this.xScale = D3.time.scale().range([0, this.width]);
     this.yScale = D3.scale.linear().range([this.height, 0]);    
   }
@@ -54,22 +57,45 @@ export class AmortLineChartComponent {
   buildSVG() {
     this.host.html('');
     this.svg = this.host.append('svg')
-      .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom)
+      .attr('width', '100%')
+      .attr('height', '100%')
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
   }
 
-  populate() {
-
+populate() {  
+    let totalPaymentPerMonth = this.amortSchedule[0].interest + this.amortSchedule[0].principal; 
+    this.yScale.domain([0, totalPaymentPerMonth]);
+    this.xScale.domain([0, this.amortSchedule.length])
+    this.svg.append('path')
+      .datum(this.amortSchedule)
+      .attr('class', 'area')
+      .style('fill', 'rgba(195, 0, 47, 1)')
+      .attr('d',D3.svg.area()
+        .x( (d: any) => this.xScale(d.indexOf(d))      ) //fix does not work maybe i should just do a map on the incoming data to get what i want.
+        .y0(this.htmlElement.clientHeight)
+        .interpolate('monotone'));
+      
   }
 
-  drawXAxis() {
-
+  drawXAxis() : void {
+    this.xAxis = D3.svg.axis().scale(this.xScale);
+    this.svg.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(0,' + this.htmlElement.clientHeight + ')')
+      .call(this.xAxis);
+    
   }
 
   drawYAxis() {
-
+    this.yAxis = D3.svg.axis().scale(this.yScale)
+      .orient('left')
+      .tickPadding(10);
+      this.svg.append('g')
+        .attr('class', 'y axis')
+        .call(this.yAxis)
+        .append('text')
+        .attr('transform', 'rotate(-90)');      
   }
 
 }

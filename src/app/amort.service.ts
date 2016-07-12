@@ -9,17 +9,16 @@ export class AmortService {
 
   constructor(private http: Http) {}
 
-  private url = 'http://docker.local:8080/mort/servlet';
-  
-  //private url = 'http://192.168.99.100:8080/mort/servlet';
 
-  private geturl = this.url + '?transid=init&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
-  private body = 'transid=outp&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
-  private inputbody = 'transid=inpt&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30';
-  private welcomebody = 'DFH_CURSOR=&DFH_ENTER=Enter';
+
+  private inputbody = 'transid=inpt&DFH_CURSOR=MONTH&MONTH=1&YEAR=2011&PRICE=100000&DPAY=0&INTREST=5.5&YEARS=30'; //just for testing
+
+
+  //private url = 'http://docker.local:8080/mort/servlet';  
+  private url = 'http://192.168.99.100:8080/mort/servlet';
   private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', withCredentials:true });
 
-
+  
   getAmortSchedule(params :AmortInputs ) {    
     let resp: Response;
 
@@ -40,11 +39,12 @@ export class AmortService {
     let localheaders = new Headers();
     localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
    
-    // return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
-    //  .map((res: Response) => this.showData(res));
+ 
+    return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
+     .map((res: Response) => this.showData(res));
 
-     return this.http.get('/app/amortSchedule.json')
-      .map((res: Response) => res.json()); 
+    //  return this.http.get('/app/amortSchedule.json')
+    //   .map((res: Response) => res.json()); 
   }
 
   getWelcomeScreen() {
