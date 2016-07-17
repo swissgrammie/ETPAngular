@@ -69,11 +69,11 @@ export class AmortService {
     let rows = table.getElementsByTagName('tr');
     var amortSequence : AmortItem[] = new Array<AmortItem>();
 
-//lets throw away the header row
+//lets throw away the header row by starting at 1
     for (let i = 1; i<rows.length; i++) {
       let values = rows[i].getElementsByTagName('td');
       let monthYear = values[0].innerText;
-      let interest = +values[1].innerText.replace(/[^0-9\.]+/g,"");
+      let interest = +values[1].innerText.replace(/[^0-9\.]+/g,""); //know this probably fails with ,'s etc  but good enough regex for the demo
       let principal = +values[2].innerText.replace(/[^0-9\.]+/g,"");  
       amortSequence.push(new AmortItem(monthYear,interest,principal));       
     }

@@ -38,11 +38,11 @@ export class AmortLineChartComponent {
   ngOnChanges(): void {
     if (!this.amortSchedule )
       return;
-    this.setup();
-    this.buildSVG();
-    this.populate();
-    this.drawXAxis();
-    this.drawYAxis();
+    // this.setup();
+    // this.buildSVG();
+    // this.populate();
+    // this.drawXAxis();
+    // this.drawYAxis();
   }
 
   setup() {
