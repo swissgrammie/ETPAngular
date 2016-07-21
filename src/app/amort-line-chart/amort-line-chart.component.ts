@@ -38,8 +38,8 @@ export class AmortLineChartComponent {
   ngOnChanges(): void {
     if (!this.amortSchedule )
       return;
-    // this.setup();
-    // this.buildSVG();
+    this.setup();
+    this.buildSVG();
     // this.populate();
     // this.drawXAxis();
     // this.drawYAxis();
@@ -50,17 +50,22 @@ export class AmortLineChartComponent {
     this.margin = { top: 20, right: 20, bottom: 40, left: 40 };
 //    this.width = this.htmlElement.clientWidth - this.margin.left - this.margin.right;
 //    this.height = this.width * 0.5 - this.margin.top - this.margin.bottom;
-    this.xScale = D3.time.scale().range([0, this.width]);
-    this.yScale = D3.scale.linear().range([this.height, 0]);    
+
+    this.xScale = D3.scale.linear().range([this.margin.left, 400 - this.margin.right]).domain([2000,2010]);
+    this.yScale = D3.scale.linear().range([400 - this.margin.top, this.margin.bottom]).domain([134,215]);
+
   }
 
   buildSVG() {
-    this.host.html('');
-    this.svg = this.host.append('svg')
-      .attr('width', '100%')
-      .attr('height', '100%')
-      .append('g')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+    this.xAxis = D3.svg.axis()
+        .scale(this.xScale);
+      
+    this.yAxis = D3.svg.axis()
+        .scale(this.yScale);
+
+    this.host.append("svg:g")
+        .call(this.xAxis);
+
   }
 
 populate() {  
