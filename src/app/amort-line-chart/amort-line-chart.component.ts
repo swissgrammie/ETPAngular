@@ -22,6 +22,8 @@ export class AmortLineChartComponent {
  private xAxis;
  private yAxis;
  private htmlElement: HTMLElement;
+ private interestLine;
+ private principalLine;
 
  /**
  * We request angular for the element reference 
@@ -54,44 +56,64 @@ export class AmortLineChartComponent {
 
     let startYear = Moment(this.amortSchedule[0].month, 'MMMM YYYY').toDate();
     let endYear =  Moment(this.amortSchedule[this.amortSchedule.length-1].month, 'MMMM YYYY').toDate();
-    this.xScale = D3.time.scale().range([0, 250]).domain([startYear,endYear]);
-    this.yScale = D3.scale.linear().range([0, 250]).domain([134,215]);
+    this.xScale = D3.time.scale().range([20, 880]).domain([startYear,endYear]);
+    this.yScale = D3.scale.linear().range([20, 580]).domain([(this.amortSchedule[0].interest+this.amortSchedule[0].principal),0]);
 
   }
 
   buildSVG() {
+
     this.xAxis = D3.svg.axis()
         .scale(this.xScale);
       
     this.yAxis = D3.svg.axis()
-        .scale(this.yScale);
+        .scale(this.yScale)
+        .orient("left");
 
-    this.svg = this.host.append("svg");
+    this.svg = this.host.append("svg")
+                  .attr("width", 900).attr("height", 600);
 
     this.svg.append("g")
-       .attr('class', 'x axis')
-       .attr("transform", "translate(0," + 150 + ")")        
+       .attr("class","axis")
+       .attr("transform", "translate(40," + (580) + ")")
        .call(this.xAxis);
 
-    this.svg = this.host.append("svg");
     this.svg.append("g")
+        .attr("class","axis")
+        .attr("transform", "translate(" + (60) + ",0)")
         .call(this.yAxis);
+
+    this.interestLine =  D3.svg.line<AmortItem>()  //NB using typescript had to specify the type passed into the function
+                    .x(function(d) {                      
+                      return this.xScale(Moment(d.month, 'MMMM YYYY').toDate());
+                    })
+                    .y(function(d) {
+                      return this.yScale(d.interest);
+                    });   
+
+    this.svg.append('path')
+      .attr('d', this.interestLine(this.amortSchedule))
+      .attr('stroke', 'green')
+      .attr('stroke-width', 2)
+      .attr('fill', 'none');
+
+    this.principalLine =  D3.svg.line<AmortItem>()  //NB using typescript had to specify the type passed into the function
+                    .x(function(d) {                      
+                      return this.xScale(Moment(d.month, 'MMMM YYYY').toDate());
+                    })
+                    .y(function(d) {
+                      return this.yScale(d.principal);
+                    });   
+
+    this.svg.append('path')
+      .attr('d', this.principalLine(this.amortSchedule))
+      .attr('stroke', 'red')
+      .attr('stroke-width', 2)
+      .attr('fill', 'none');
+
   }
 
-populate() {  
-    let totalPaymentPerMonth = this.amortSchedule[0].interest + this.amortSchedule[0].principal; 
-    this.yScale.domain([0, totalPaymentPerMonth]);
-    this.xScale.domain([0, this.amortSchedule.length])
-    this.svg.append('path')
-      .datum(this.amortSchedule)
-      .attr('class', 'area')
-      .style('fill', 'rgba(195, 0, 47, 1)')
-      .attr('d',D3.svg.area()
-        .x( (d: any) => this.xScale(d.indexOf(d))      ) //fix does not work maybe i should just do a map on the incoming data to get what i want.
-        .y0(this.htmlElement.clientHeight)
-        .interpolate('monotone'));
-      
-  }
+
 
   drawXAxis() : void {
     this.xAxis = D3.svg.axis().scale(this.xScale);
