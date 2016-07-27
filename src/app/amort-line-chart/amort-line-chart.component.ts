@@ -46,13 +46,16 @@ export class AmortLineChartComponent {
   }
 
   setup() {
-    
+    this.host.html(''); //just get rid of any existing charts
     this.margin = { top: 20, right: 20, bottom: 40, left: 40 };
 //    this.width = this.htmlElement.clientWidth - this.margin.left - this.margin.right;
 //    this.height = this.width * 0.5 - this.margin.top - this.margin.bottom;
+//      let monthYear = Moment(values[0].innerText, 'MMMM YYYY').toJSON() ;
 
-    this.xScale = D3.scale.linear().range([this.margin.left, 400 - this.margin.right]).domain([2000,2010]);
-    this.yScale = D3.scale.linear().range([400 - this.margin.top, this.margin.bottom]).domain([134,215]);
+    let startYear = Moment(this.amortSchedule[0].month, 'MMMM YYYY').toDate();
+    let endYear =  Moment(this.amortSchedule[this.amortSchedule.length-1].month, 'MMMM YYYY').toDate();
+    this.xScale = D3.time.scale().range([0, 250]).domain([startYear,endYear]);
+    this.yScale = D3.scale.linear().range([0, 250]).domain([134,215]);
 
   }
 
@@ -63,9 +66,16 @@ export class AmortLineChartComponent {
     this.yAxis = D3.svg.axis()
         .scale(this.yScale);
 
-    this.host.append("svg:g")
-        .call(this.xAxis);
+    this.svg = this.host.append("svg");
 
+    this.svg.append("g")
+       .attr('class', 'x axis')
+       .attr("transform", "translate(0," + 150 + ")")        
+       .call(this.xAxis);
+
+    this.svg = this.host.append("svg");
+    this.svg.append("g")
+        .call(this.yAxis);
   }
 
 populate() {  

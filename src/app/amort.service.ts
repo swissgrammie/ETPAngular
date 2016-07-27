@@ -3,6 +3,7 @@ import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { AmortItem } from './amort-item';
 import { AmortInputs } from './amort-form/amort-inputs';
+import * as Moment from 'moment';
 
 @Injectable()
 export class AmortService {
@@ -15,7 +16,7 @@ export class AmortService {
 
 
   //private url = 'http://docker.local:8080/mort/servlet';  
-  private url = 'http://192.168.99.100:8080/mort/servlet';
+   private url = 'http://192.168.99.100:8080/mort/servlet';
   private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', withCredentials:true });
 
   
@@ -40,11 +41,11 @@ export class AmortService {
     localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
    
  
-    // return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
-    //  .map((res: Response) => this.showData(res));
+    return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
+     .map((res: Response) => this.showData(res));
 
-     return this.http.get('/app/amortSchedule.json')
-      .map((res: Response) => res.json()); 
+    //  return this.http.get('/app/amortSchedule.json')
+    //   .map((res: Response) => res.json()); 
   }
 
   getWelcomeScreen() {
@@ -72,8 +73,9 @@ export class AmortService {
 //lets throw away the header row by starting at 1
     for (let i = 1; i<rows.length; i++) {
       let values = rows[i].getElementsByTagName('td');
-      let monthYear = values[0].innerText;
-      let interest = +values[1].innerText.replace(/[^0-9\.]+/g,""); //know this probably fails with ,'s etc  but good enough regex for the demo
+//      let monthYear = Moment(values[0].innerText, 'MMMM YYYY').toJSON() ;
+      let monthYear = values[0].innerText ;
+      let interest = +values[1].innerText.replace(/[^0-9\.]+/g,""); //know this probably fails with ,'s etc but good enough regex for the demo
       let principal = +values[2].innerText.replace(/[^0-9\.]+/g,"");  
       amortSequence.push(new AmortItem(monthYear,interest,principal));       
     }
