@@ -17,7 +17,7 @@ module.exports = function(defaults) {
       'rxjs/**/*.+(js|js.map)',
       '@angular/**/*.+(js|js.map)',
       'moment/moment.js',
-      'd3/index.js',
+      'd3/**/*.+(js|js.map)',
       'bootstrap/dist/**/*.+(ts|js|js.map|css)'
     ]
   });
