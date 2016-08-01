@@ -41,11 +41,11 @@ export class AmortService {
     localheaders.append('Content-Type', 'application/x-www-form-urlencoded');
    
  
-    return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
-     .map((res: Response) => this.showData(res));
+    // return this.http.post(this.url, urlParams.toString() , {headers: localheaders, withCredentials:true})
+    //  .map((res: Response) => this.showData(res));
 
-    //  return this.http.get('/app/amortSchedule.json')
-    //   .map((res: Response) => res.json()); 
+     return this.http.get('/app/amortSchedule.json')
+      .map((res: Response) => res.json()); 
   }
 
   getWelcomeScreen() {
