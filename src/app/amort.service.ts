@@ -16,7 +16,9 @@ export class AmortService {
 
 
   //private url = 'http://docker.local:8080/mort/servlet';  
-   private url = 'http://192.168.99.100:8080/mort/servlet';
+//   private url = 'http://192.168.99.100:8080/mort/servlet';
+   private url = 'http://localhost:8080/mort/servlet';
+   
   private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', withCredentials:true });
 
   
